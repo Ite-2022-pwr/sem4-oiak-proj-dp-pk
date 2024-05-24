@@ -1,6 +1,9 @@
 keys.out: keys.o utils.o prime.o modulo.o euklides.o extended_euklides.o
 	gcc -no-pie -ggdb -o keys.out keys.o utils.o prime.o modulo.o euklides.o extended_euklides.o
 
+utils.out: utils.o encrypt.o decrypt.o
+	gcc -no-pie -ggdb -o utils.out utils.o encrypt.o decrypt.o
+
 keys.o: keys.asm
 	nasm -f elf64 -g -F dwarf keys.asm -l keys.lst
 
@@ -18,6 +21,12 @@ power.o: power.asm
 
 prime.o: prime.asm
 	nasm -f elf64 -g -F dwarf prime.asm -l prime.lst
+
+encrypt.o: encrypt.asm
+	nasm -f elf64 -g -F dwarf encrypt.asm -l encrypt.lst
+
+decrypt.o: decrypt.asm
+	nasm -f elf64 -g -F dwarf decrypt.asm -l decrypt.lst
 
 utils.o: utils.c
 	gcc -ggdb -c -o utils.o utils.c
