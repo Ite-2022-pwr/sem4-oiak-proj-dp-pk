@@ -1,9 +1,18 @@
+section .data
+    key_pub db 'key_pub.txt', 0
+    key_priv db 'key_priv.txt', 0
+
+    test_message db 'test!', 0 
+
 section .bss
     first_prime resb 1
     second_prime resb 1
     e resb 1
 
 section .text
+    extern write_public_key
+    extern write_private_key
+
     extern _fun_prime
     extern _fun_euklides
     extern _fun_modulo
@@ -69,7 +78,7 @@ _e_loop:
     mov rdx, 0
     syscall         ; e is in rax
 
-    mov rcx, rax    ; move e to rcx
+    mov rcx, [e]    ; move e to rcx
 
     mov rdi, rcx
     mov rsi, 2
@@ -77,7 +86,7 @@ _e_loop:
     mov rcx, rdi
 
     ; e % 2 == 0
-    cmp rcx, 0
+    cmp rax, 0
     je _e_loop
 
     ; e <= 1
@@ -92,13 +101,30 @@ _e_loop:
 
     pop rbx             ; O is on stack -> n is in RBX
     pop rdi             ; nothing on stack -> O is in RDI
-    ;push rbx           ; O is on stack
+    mov r8, rdi
     mov rsi, rcx        ; RCX is e -> RSI is e
     call _fun_euklides  ; euklides(RDI[O], RSI[e])
 
+_test1:
     cmp rax, 1
-    jne _e_loop
+    je _continue_euklides
 
+    push rdi
+    push rbx
+    jmp _e_loop
+
+_continue_euklides:
+    mov r9, rbx
+    mov rsi, rcx
+    mov rdi, r8 
     call _fun_extended_euklides
 
-_test:
+; d is in RAX
+; e is in RCX
+; n is in R9
+
+_write_keys:
+    ; write public keys
+    mov rdi, rcx
+    mov rsi, r9
+    call write_public_key
