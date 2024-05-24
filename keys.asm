@@ -19,9 +19,9 @@ section .text
     ;extern _fun_power
     extern _fun_extended_euklides
     
-    global _start
+    global main
 
-_start:
+main:
     push rbp
     mov rbp, rsp
 
@@ -124,7 +124,17 @@ _continue_euklides:
 ; n is in R9
 
 _write_keys:
+    push rax
     ; write public keys
     mov rdi, rcx
     mov rsi, r9
+    push r9
     call write_public_key
+
+    pop rsi
+    pop rdi
+    call write_private_key
+
+    mov rax, 60
+    mov rdi, 0
+    syscall
