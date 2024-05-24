@@ -10,7 +10,8 @@ void write_public_key(unsigned int e, unsigned int n) {
         return;
     }
 
-    fprintf(fptr, "%d, %d", e, n);
+    fprintf(fptr, "%d,%d", e, n);
+    fclose(fptr);
 }
 
 void write_private_key(unsigned int d, unsigned int n) {
@@ -23,5 +24,6 @@ void write_private_key(unsigned int d, unsigned int n) {
         return;
     }
 
-    fprintf(fptr, "%d, %d", d, n);
+    fprintf(fptr, "%d,%d", d, n);
+    fclose(fptr);
 }
