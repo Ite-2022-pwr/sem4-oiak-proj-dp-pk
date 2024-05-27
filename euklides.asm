@@ -3,6 +3,10 @@ section .text
     global _fun_euklides
 
 _fun_euklides:
+    push rbp
+    mov rbp, rsp
+
+_euklides_loop:
     cmp rsi, 0
     je _end 
     jne _calc
@@ -12,7 +16,7 @@ _calc:
     push rsi    
     mov rsi, rax
     pop rdi
-    jmp _fun_euklides
+    jmp _euklides_loop
 
 _end:
     mov rax, rdi

@@ -12,6 +12,7 @@ section .bss
 section .text
     extern write_public_key
     extern write_private_key
+    extern read_private_key
 
     extern _fun_prime
     extern _fun_euklides
@@ -134,6 +135,8 @@ _write_keys:
     pop rsi
     pop rdi
     call write_private_key
+
+    call read_private_key
 
     mov rax, 60
     mov rdi, 0

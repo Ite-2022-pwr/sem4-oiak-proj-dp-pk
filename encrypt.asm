@@ -1,6 +1,4 @@
 section .text
-    extern read_public_key
-
     global encrypt
 
 encrypt:

@@ -5,7 +5,6 @@ decrypt:
     push rbp
     mov rbp, rsp
 
-
 exit:
     leave 
     ret
