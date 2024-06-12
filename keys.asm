@@ -20,9 +20,9 @@ section .text
     ;extern _fun_power
     extern _fun_extended_euklides
     
-    global main
+    global generateKeys
 
-main:
+generateKeys:
     push rbp
     mov rbp, rsp
 
@@ -58,19 +58,29 @@ _second_prime_loop:
     mov rbx, [second_prime]
 
 _calculate:
+    mov rax, rcx
+    imul rax, rbx ; calculate n
+
+    cmp rax, 101
+    jl _first_prime_loop
+
+    cmp rax, 9999
+    jg _first_prime_loop
+
+    push rax ; n is on stack
+
     dec rcx
     dec rbx
     mov rax, rcx
     imul rax, rbx
     
-    push rax ; O is on stack
-
-    inc rcx
-    inc rbx
-    mov rax, rcx
-    imul rax, rbx
-
     push rax ; O, n is on stack
+
+    ; swaping parameters on stack
+    pop r8
+    pop r9
+    push r8 
+    push R9 ; n, O is on stack
 
 _e_loop:
     mov rax, 318
@@ -138,6 +148,5 @@ _write_keys:
 
     call read_private_key
 
-    mov rax, 60
-    mov rdi, 0
-    syscall
+    leave
+    ret
